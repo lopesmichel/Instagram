@@ -47,6 +47,41 @@ const register = async (req, res) => {
     })
 }
 
+//login
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  console.log("Dados recebidos:", req.body);
+
+  const user = await User.findOne({ email }).select("+password");
+
+  if (!user) {
+    return res.status(404).json({ errors: ["Usuário não encontrado."] });
+  }
+
+  console.log("Usuário encontrado:", user);
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    return res.status(422).json({ errors: ["Senha inválida"] });
+  }
+
+  res.status(200).json({
+    _id: user._id,
+    profileImage: user.profileImage,
+    token: generateToken(user._id),
+  });
+};
+
+
+const getCurrentUser = async(req, res) => {
+    const user = req.user
+
+    res.status(200).json(user)
+}
+
 module.exports = {
     register,
-}
+    login,
+    getCurrentUser,
+};
