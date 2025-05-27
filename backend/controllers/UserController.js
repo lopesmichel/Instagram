@@ -121,9 +121,32 @@ const update = async (req, res) => {
     res.status(200).json(user);
 }
 
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+
+    // Verifica se o ID é válido antes de consultar o banco
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ errors: ["Usuário inválido."] });
+    }
+
+    try {
+        const user = await User.findById(id).select("-password");
+
+        if (!user) {
+        return res.status(404).json({ errors: ["Usuário não encontrado."] });
+        }
+
+        return res.status(200).json(user);
+    } catch (error) {
+        console.error("Erro ao buscar usuário:", error);
+        return res.status(500).json({ errors: ["Erro ao buscar usuário."] });
+    }
+};
+
 module.exports = {
     register,
     login,
     getCurrentUser,
-    update
+    update,
+    getUserById,
 };
