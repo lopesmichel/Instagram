@@ -29,6 +29,37 @@ const insertPhoto = async(req, res) => {
     res.status(201).json(newPhoto)
 }
 
+// excluir foto
+
+    const deletePhoto = async (req, res) => {
+    const { id } = req.params;
+    const reqUser = req.user;
+
+        try {
+            const photo = await Photo.findById(id);
+
+            if (!photo) {
+            return res.status(404).json({ errors: ["Foto não encontrada!"] });
+            }
+
+            if (!photo.userId.equals(reqUser._id)) {
+            return res
+                .status(403)
+                .json({ errors: ["Acesso negado! Você não pode deletar esta foto."] });
+            }
+
+            await Photo.findByIdAndDelete(photo._id);
+
+            res
+            .status(200)
+            .json({ id: photo._id, message: "Foto excluída com sucesso." });
+        } catch (error) {
+            console.error("Erro ao excluir foto:", error);
+            return res.status(500).json({ errors: ["Erro ao excluir foto."] });
+        }
+    };
+  
 module.exports = {
     insertPhoto,
+    deletePhoto,
 }
