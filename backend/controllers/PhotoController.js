@@ -57,9 +57,54 @@ const insertPhoto = async(req, res) => {
             console.error("Erro ao excluir foto:", error);
             return res.status(500).json({ errors: ["Erro ao excluir foto."] });
         }
-    };
-  
-module.exports = {
-    insertPhoto,
-    deletePhoto,
+};
+
+//exibir todas as fotos
+const getAllPhotos = async(req, res) => {
+
+    const photos = await Photo.find({})
+      .sort([["createdAt", -1]])
+      .exec();
+        return res.status(200).json(photos)   
 }
+
+// exibir fotos do usuário
+
+const getUserPhotos = async(req, res) => {
+
+    const {id} = req.params
+    
+    const photos = await Photo.find({userId: id})
+    .sort([["createdAt", -1]])
+    .exec()
+
+    return res.status(200).json(photos)
+
+}
+
+// exibir foto pelo id
+
+const getPhotoById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const photo = await Photo.findById(id);
+
+    if (!photo) {
+      return res.status(404).json({ errors: ["Foto não encontrada."] });
+    }
+
+    return res.status(200).json(photo);
+  } catch (error) {
+    console.error("Erro ao buscar foto:", error);
+    return res.status(500).json({ errors: ["Erro ao buscar foto."] });
+  }
+};
+
+module.exports = {
+  insertPhoto,
+  deletePhoto,
+  getAllPhotos,
+  getUserPhotos,
+  getPhotoById,
+};
