@@ -1,4 +1,6 @@
 import React from "react";
+import "./App.css"
+
 import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 
 //pages
@@ -14,13 +16,15 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <NavBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      <Footer />
+        <NavBar />
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </div>
+        <Footer />
       </BrowserRouter>
     </div>
   );
