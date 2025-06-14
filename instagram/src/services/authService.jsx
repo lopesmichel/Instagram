@@ -1,20 +1,24 @@
 import {api, requestConfig} from '../utils/config'
 
-const register = async(data) => {
-    const config = requestConfig("POST", data)
+const register = async (data) => {
+  const config = requestConfig("POST", data);
 
-    try {
-        const res = await fetch(api + "/users/register", config)
-        .then((res) => res.json())
-        .catch((err) => err)
+  try {
+    const response = await fetch(api + "/users/register", config);
+    const resData = await response.json();
 
-        if(res) {
-            localStorage.setItem("user", JSON.stringify(res))
-        }
-    } catch (error) {
-        console.log(error)
+    if (!response.ok) {
+      console.error("Erro do backend:", resData);
+      return resData;
     }
-}
+
+    localStorage.setItem("user", JSON.stringify(resData));
+    return resData;
+  } catch (error) {
+    console.error("Erro de rede:", error);
+  }
+};
+  
 
 const authService = {
     register
