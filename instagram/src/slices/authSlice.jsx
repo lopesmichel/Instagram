@@ -25,7 +25,8 @@ export const register = createAsyncThunk(
   }
 );
 
-// Logout a user
+
+// Logout usuário
 export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
 });
@@ -77,7 +78,7 @@ export const authSlice = createSlice({
       })
       .addCase(login.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = false;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;

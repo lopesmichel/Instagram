@@ -1,27 +1,54 @@
 import {api, requestConfig} from '../utils/config'
 
+// Register a user
 const register = async (data) => {
   const config = requestConfig("POST", data);
 
   try {
-    const response = await fetch(api + "/users/register", config);
-    const resData = await response.json();
+    const res = await fetch(api + "/users/register", config)
+      .then((res) => res.json())
+      .catch((err) => err);
 
-    if (!response.ok) {
-      console.error("Erro do backend:", resData);
-      return resData;
+    if (res) {
+      localStorage.setItem("user", JSON.stringify(res));
     }
 
-    localStorage.setItem("user", JSON.stringify(resData));
-    return resData;
+    return res;
   } catch (error) {
-    console.error("Erro de rede:", error);
+    console.log(error);
   }
 };
   
 
+//logout usuario
+const logout = () => {
+  localStorage.removeItem("user")
+}
+
+// login usuario
+const login = async(data) => {
+  const config = requestConfig("POST", data)
+
+  try {
+
+    const res = await fetch(api + "/users/login", config)
+    .then((res) => res.json())
+    .catch((err) => err)
+
+    if(res._id) {
+      localStorage.setItem("user", JSON.stringify(res))
+    }
+    return res
+  }catch(error) {
+    console.log(error)
+  }
+}
+
+
 const authService = {
-    register
+    register,
+    logout,
+    login,
 }
 
 export default authService
