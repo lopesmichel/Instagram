@@ -1,34 +1,35 @@
-import React from "react";
-import "./App.css"
+import "./App.css";
 
-import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
-
-//Hooks
+// Hooks
 import { useAuth } from "./hooks/useAuth";
 
-//pages
+// router
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+// components
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
+// pages
 import Home from "./pages/Home/Home";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
-
-//components
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
-import EditProfile from "./pages/EditProfile.jsx/EditProfile";
-
-
+import EditProfile from "./pages/EditProfile/EditProfile";
+import Profile from "./pages/Profile/Profile";
+import Photo from "./pages/Photo/Photo";
+import Search from "./pages/Search/Search";
 
 function App() {
+  const { auth, loading } = useAuth();
 
-  const {auth, loading} = useAuth()
-
-  if(loading) {
-    return <p>Carregando...</p>
+  if (loading) {
+    return <p>Carregando...</p>;
   }
+
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar />
+        <Navbar />
         <div className="container">
           <Routes>
             <Route
@@ -40,13 +41,22 @@ function App() {
               element={auth ? <EditProfile /> : <Navigate to="/login" />}
             />
             <Route
-              path="/login"
+              path="/users/:id"
+              element={auth ? <Profile /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/search"
+              element={auth ? <Search /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="login"
               element={!auth ? <Login /> : <Navigate to="/" />}
             />
             <Route
-              path="/register"
+              path="register"
               element={!auth ? <Register /> : <Navigate to="/" />}
             />
+            <Route path="photos/:id" element={<Photo />} />
           </Routes>
         </div>
         <Footer />

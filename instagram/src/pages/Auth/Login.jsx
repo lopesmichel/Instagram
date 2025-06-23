@@ -1,5 +1,4 @@
-import React from 'react'
-import "./Auth.css"
+import "./Auth.css";
 
 // Components
 import { Link } from "react-router-dom";

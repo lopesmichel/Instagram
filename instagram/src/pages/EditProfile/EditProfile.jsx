@@ -1,19 +1,18 @@
-import React from 'react'
-import "./EditProfile.css"
+import "./EditProfile.css";
 
-import { uploads} from "../../utils/config"
+import { uploads } from "../../utils/config";
 
-// hooks
-import { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+// Hooks
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-//Redux
-import {profile, resetMessage} from "../../slices/userSlice"
+// Redux
+import { profile, updateProfile, resetMessage } from "../../slices/userSlice";
 
-//components
-import Message from '../../components/Message'
+// Components
+import Message from "../../components/Message";
 
-const EditProfile = () => {
+const Profile = () => {
   const dispatch = useDispatch();
 
   const { user, message, error, loading } = useSelector((state) => state.user);
@@ -25,7 +24,7 @@ const EditProfile = () => {
   const [bio, setBio] = useState("");
   const [previewImage, setPreviewImage] = useState("");
 
-  //load user data
+  // Load user data
   useEffect(() => {
     dispatch(profile());
   }, [dispatch]);
@@ -87,9 +86,9 @@ const EditProfile = () => {
 
   return (
     <div id="edit-profile">
-      <h2>Edute seus dados</h2>
+      <h2>Edite seus dados</h2>
       <p className="subtitle">
-        Adicione uma imagem de perfil e conte mais sobre você...
+        Adicione uma imagem de perfil, e conte mais um pouco sobre você...
       </p>
       {(user.profileImage || previewImage) && (
         <img
@@ -106,20 +105,20 @@ const EditProfile = () => {
         <input
           type="text"
           placeholder="Nome"
-          onChange={(e) => setName(e.target)}
+          onChange={(e) => setName(e.target.value)}
           value={name || ""}
         />
         <input type="email" placeholder="E-mail" disabled value={email || ""} />
         <label>
-          <span>Imagem do Perfil:</span>
-          <input type="file" />
+          <span>Imagem de Perfil:</span>
+          <input type="file" onChange={handleFile} />
         </label>
         <label>
           <span>Bio:</span>
           <input
             type="text"
             placeholder="Descrição do perfil"
-            onChange={(e) => setBio(e.target)}
+            onChange={(e) => setBio(e.target.value)}
             value={bio || ""}
           />
         </label>
@@ -127,8 +126,8 @@ const EditProfile = () => {
           <span>Quer alterar sua senha?</span>
           <input
             type="password"
-            placeholder="Digite sua nova senha"
-            onChange={(e) => setPassword(e.target)}
+            placeholder="Digite sua nova senha..."
+            onChange={(e) => setPassword(e.target.value)}
             value={password || ""}
           />
         </label>
@@ -139,6 +138,6 @@ const EditProfile = () => {
       </form>
     </div>
   );
-}
+};
 
-export default EditProfile
+export default Profile;

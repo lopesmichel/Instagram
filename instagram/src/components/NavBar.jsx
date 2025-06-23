@@ -1,22 +1,26 @@
-import React from 'react'
-import "./NavBar.css"
+import "./Navbar.css";
 
-//components
-import { NavLink, Link } from 'react-router-dom'
-import {BsSearch, BsHouseDoorFill, BsFillPersonFill, BsFillCameraFill} from "react-icons/bs"
+// Components
+import { NavLink, Link } from "react-router-dom";
+import {
+  BsSearch,
+  BsHouseDoorFill,
+  BsFillPersonFill,
+  BsFillCameraFill,
+} from "react-icons/bs";
 
 // Hooks
-import { useState } from 'react'
-import {useAuth} from "../hooks/useAuth"
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // Redux
 import { logout, reset } from "../slices/authSlice";
 
-const NavBar = () => {
-  const {auth} = useAuth()
-  const {user} = useSelector((state) => state.auth)
+const Navbar = () => {
+  const { auth } = useAuth();
+  const { user } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
 
@@ -90,6 +94,6 @@ const NavBar = () => {
       </ul>
     </nav>
   );
-}
+};
 
-export default NavBar
+export default Navbar;
