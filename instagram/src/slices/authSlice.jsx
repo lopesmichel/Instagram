@@ -14,16 +14,23 @@ const initialState = {
 export const register = createAsyncThunk(
   "auth/register",
   async (user, thunkAPI) => {
-    const data = await authService.register(user);
+    try {
+      const data = await authService.register(user);
 
-    // Check for errors
-    if (data.errors) {
-      return thunkAPI.rejectWithValue(data.errors[0]);
+      if (data.errors) {
+        return thunkAPI.rejectWithValue(data.errors[0]);
+      }
+
+      return data;
+    } catch (err) {
+ 
+      return thunkAPI.rejectWithValue(
+        err.message || "Erro ao registrar. Verifique sua conexão."
+      );
     }
-
-    return data;
   }
 );
+
 
 // Logout a user
 export const logout = createAsyncThunk("auth/logout", async () => {

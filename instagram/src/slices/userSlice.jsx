@@ -10,18 +10,11 @@ const initialState = {
 };
 
 // Get user details, for edit data
-export const profile = createAsyncThunk(
-  "user/profile",
-  async (user, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
-
-    const data = await userService.profile(user, token);
-
-    console.log(data);
-
-    return data;
-  }
-);
+export const profile = createAsyncThunk("user/profile", async (_, thunkAPI) => {
+  const token = thunkAPI.getState().auth.user.token;
+  const data = await userService.profile(token);
+  return data;
+});
 
 // Update user details
 export const updateProfile = createAsyncThunk(

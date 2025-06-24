@@ -1,8 +1,8 @@
 import { api, requestConfig } from "../utils/config";
 
 // Get user details
-const profile = async (data, token) => {
-  const config = requestConfig("GET", data, token);
+const profile = async (token) => {
+  const config = requestConfig("GET", null, token);
 
   try {
     const res = await fetch(api + "/users/profile", config)
@@ -14,6 +14,7 @@ const profile = async (data, token) => {
     console.log(error);
   }
 };
+
 
 // Update user details
 const updateProfile = async (data, token) => {

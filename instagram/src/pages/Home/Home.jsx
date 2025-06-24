@@ -21,14 +21,16 @@ const Home = () => {
   const { user } = useSelector((state) => state.auth);
   const { photos, loading } = useSelector((state) => state.photo);
 
-  // Load all photos
+  // Carregar todas as fotos ao montar o componente
   useEffect(() => {
-    dispatch(getPhotos());
-  }, [dispatch]);
-
-  const handleLike = (photo = null) => {
+    if (user && user.token) {
+      dispatch(getPhotos(user.token));
+    }
+  }, [dispatch, user]);
+  
+  const handleLike = (photo) => {
+    if (!photo?._id) return;  
     dispatch(like(photo._id));
-
     resetMessage();
   };
 
@@ -38,7 +40,9 @@ const Home = () => {
 
   return (
     <div id="home">
-      {photos &&
+      {/* Lista de fotos */}
+      {Array.isArray(photos) &&
+        photos.length > 0 &&
         photos.map((photo) => (
           <div key={photo._id}>
             <PhotoItem photo={photo} />
@@ -48,7 +52,9 @@ const Home = () => {
             </Link>
           </div>
         ))}
-      {photos && photos.length === 0 && (
+
+      {/* Nenhuma foto publicada */}
+      {Array.isArray(photos) && photos.length === 0 && user?.userId && (
         <h2 className="no-photos">
           Ainda não há fotos publicadas,{" "}
           <Link to={`/users/${user.userId}`}>clique aqui</Link> para começar.

@@ -125,12 +125,18 @@ export const comment = createAsyncThunk(
 );
 
 // Get all photos
-export const getPhotos = createAsyncThunk("photo/getall", async () => {
-  const data = await photoService.getPhotos();
-
-  return data;
-});
-
+export const getPhotos = createAsyncThunk(
+  "photo/getall",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;  
+      return await photoService.getPhotos(token);  
+    } catch (error) {
+      const message = error.message;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 // Search photos by title
 export const searchPhotos = createAsyncThunk(
   "photo/search",
