@@ -187,7 +187,9 @@ export const photoSlice = createSlice({
         state.loading = false;
         state.success = true;
         state.error = null;
-        state.photos = action.payload;
+        state.photos = Array.isArray(action.payload)
+          ? action.payload
+          : action.payload.photos;
       })
       .addCase(getPhoto.pending, (state) => {
         state.loading = true;

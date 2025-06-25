@@ -90,7 +90,7 @@ const Photo = () => {
                 <div className="author">
                   {comment.userImage && (
                     <img
-                      src={`${uploads}/users/${comment.userImage}`}
+                      src={`${uploads}/${comment.userImage}`}
                       alt={comment.userName}
                     />
                   )}
